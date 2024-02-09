@@ -1,0 +1,10 @@
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+.separate-content {
+  width: 3px;
+  background-color: white;
+}
