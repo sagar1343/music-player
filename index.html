@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" data-bs-theme="dark">
+<html lang="en">
   <head>
     <title>music-player</title>
     <meta charset="utf-8" />
@@ -30,37 +30,43 @@
     </nav>
     <div class="container-fluid d-flex flex-column w-100 flex-sm-row">
       <aside class="w-25">
-        <h2 class="p-4 h-100 text-nowrap">Album-section</h2>
+        <h2 class="p-4 h-100 text-nowrap">Album</h2>
       </aside>
       <main class="flex-grow-1">
         <h1 class="p-3 display-1 fw-bold">New Releases</h1>
         <div
-          class="songsContainer d-flex flex-wrap justify-content-evenly align-items-lg-stretch row-gap-3"></div>
+          class="songsContainer d-flex flex-wrap justify-content-evenly align-items-lg-stretch row-gap-3 column-gap-1"></div>
       </main>
     </div>
-    <section class="d-flex justify-content-center">
-      <div
-        class="w-50 bg-dark d-flex align-items-center rounded-2 bg-light overflow-hidden">
+    <section class="d-flex justify-content-center fixed-bottom bg-secondary">
+      <div class="hstack mobilePlayer">
         <div class="p-3">
           <img
-            src="https://picsum.photos/200/200"
-            class="object-fit-cover rounded-5"
+            src="images/logo.svg"
+            class="object-fit-cover rounded-5 imgThumbnail"
             width="60px" />
         </div>
-        <div class="d-flex gap-2 fs-3">
-          <i class="bi bi-arrow-counterclockwise"></i>
-          <button id="togglePlay" class="btn btn-primary">
-            <i class="bi bi-play-fill"></i>
-          </button>
-          <!-- <i class="bi bi-pause-fill"></i> -->
-          <i class="bi bi-arrow-clockwise"></i>
+        <div class="hstack player">
+          <div class="hstack gap-1 p-1">
+            <button id="previous" class="btn btn-lg btn-primary">
+              <i class="bi bi-arrow-counterclockwise"></i>
+            </button>
+            <button id="togglePlay" class="btn btn-lg btn-primary">
+              <i class="bi bi-play-fill"></i>
+            </button>
+            <button id="next" class="btn btn-lg btn-primary">
+              <i class="bi bi-arrow-clockwise"></i>
+            </button>
+          </div>
+          <div class="hstack">
+            <span class="currentTime text-white p-3">0:00</span>
+            <input id="progress" class="flex-grow-1" type="range" value="0" />
+            <span class="endTime text-white p-3">----</span>
+          </div>
         </div>
-        <span class="p-3">1:26</span>
-        <input type="range" class="form-range" />
-        <span class="p-3">3:20</span>
       </div>
     </section>
-
+    <footer></footer>
     <script src="index.js"></script>
     <script
       src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js"

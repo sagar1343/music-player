@@ -4,7 +4,31 @@
   padding: 0;
 }
 
-.separate-content {
-  width: 3px;
-  background-color: white;
+.card {
+  width: 13rem;
+  cursor: pointer;
+}
+footer {
+  height: 13vh;
+}
+#progress::-webkit-slider-runnable-track {
+  border-radius: 14px;
+  background-color: dodgerblue;
+}
+@media screen and (max-width: 526px) {
+  .player {
+    display: flex;
+    flex-direction: column-reverse;
+    margin: 6px 6px;
+  }
+  .player > div {
+    justify-content: center;
+  }
+  .imgThumbnail {
+    border-radius: 5px !important;
+  }
+  .mobilePlayer {
+    width: 100%;
+    justify-content: space-evenly;
+  }
 }
