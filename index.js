@@ -5,24 +5,33 @@ const playBtn = document.getElementById("togglePlay");
 const playingTime = document.querySelector(".currentTime");
 const endTime = document.querySelector(".endTime");
 const range = document.getElementById("progress");
-const songsList = [
-  "param sundari",
-  "Ranjha",
-  "Lutt Putt Gaya",
-  "sapna jahan",
-  "besabriya",
-  "Dosti",
-  "tujh me rab dikhta hai",
-  "Bandeya re",
-  "khairiyat",
-  "paniyo sa ",
-  "pathaan",
-  "Chaleya",
-  "Ishq Jaisa Kuch",
-  "kaise hua",
-  "kal ho na ho",
-];
-let audio;
+const thumbnailImage = document.querySelector(".imgThumbnail");
+const previousBtn = document.getElementById("previous");
+const nextBtn = document.getElementById("next");
+const songsList = [];
+async function getSongList() {
+  const url = "https://youtube-music-api3.p.rapidapi.com/home?gl=IN";
+  const options = {
+    method: "GET",
+    headers: {
+      "X-RapidAPI-Key": "4a919c5ff0msh9dc17868ff43ce1p1e025ajsna7935e365d59",
+      "X-RapidAPI-Host": "youtube-music-api3.p.rapidapi.com",
+    },
+  };
+
+  try {
+    const response = await fetch(url, options);
+    const data = await response.json();
+    data.results.quick_picks
+      .slice(0, 18)
+      .forEach((song) => songsList.push(song.title));
+  } catch (error) {
+    console.error(error);
+  }
+}
+
+let audio = new Audio();
+let playingSongId;
 
 async function fetchMusicData(songName) {
   const params = `?q=${songName}&searchEngine=mtmusic`;
@@ -39,7 +48,7 @@ async function getSongAudio(id) {
     audio.pause();
   }
 
-  audio = new Audio(`${audioUrl}${params}`);
+  audio.src = `${audioUrl}${params}`;
   return audio;
 }
 
@@ -58,26 +67,32 @@ function createSongCard(data, index) {
 }
 
 async function addSongCards() {
+  await getSongList();
   for (let index = 0; index < songsList.length; index++) {
     const song = songsList[index];
     const data = await fetchMusicData(song);
     const card = createSongCard(data, index);
+    card.addEventListener("click", (event) => handleCardClick(event));
     songsContainer.appendChild(card);
   }
 }
 
 async function playMusic(songID) {
   await getSongAudio(songID);
+  const data = await fetchMusicData(songsList[songID]);
   range.addEventListener("input", () => handleProgress(audio));
-
-  audio &&
-    audio.addEventListener("timeupdate", () => {
-      displayTime(audio);
-      progressControl(audio);
-    });
+  audio.addEventListener("timeupdate", () => {
+    displayTime(audio);
+    progressControl(audio);
+  });
+  audio.play();
+  playBtn.innerHTML = '<i class="bi bi-pause-fill"></i>';
+  thumbnailImage.src = data.response[0].img;
 }
 
-playBtn.addEventListener("click", async () => {
+playBtn.addEventListener("click", togglePlay);
+
+function togglePlay() {
   if (audio.paused) {
     audio.play();
     playBtn.innerHTML = '<i class="bi bi-pause-fill"></i>';
@@ -85,7 +100,7 @@ playBtn.addEventListener("click", async () => {
     playBtn.innerHTML = '<i class="bi bi-play-fill"></i>';
     audio.pause();
   }
-});
+}
 
 function formatTime(seconds) {
   const minutes = Math.floor(seconds / 60);
@@ -106,7 +121,20 @@ function handleProgress(audio) {
   const seekTime = (range.value / 100) * audio.duration;
   audio.currentTime = seekTime;
 }
+function handleCardClick(event) {
+  const card = event.currentTarget;
+  const songID = card.id;
+  playingSongId = songID;
+  playMusic(songID);
+}
+
+previousBtn.addEventListener("click", () => {
+  const prevId = --playingSongId;
+  if (prevId >= 0) playMusic(prevId);
+});
+nextBtn.addEventListener("click", () => {
+  const nextId = ++playingSongId;
+  if (nextId < songsList.length) playMusic(nextId);
+});
 
 addSongCards();
-
-playMusic(1);
