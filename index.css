@@ -16,6 +16,9 @@ footer {
   background-color: dodgerblue;
 }
 @media screen and (max-width: 526px) {
+  .card {
+    width: 18rem;
+  }
   .player {
     display: flex;
     flex-direction: column-reverse;
@@ -25,7 +28,8 @@ footer {
     justify-content: center;
   }
   .imgThumbnail {
-    border-radius: 5px !important;
+    width: 5rem;
+    aspect-ratio: 1;
   }
   .mobilePlayer {
     width: 100%;
