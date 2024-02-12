@@ -95,8 +95,6 @@ async function playMusic(songID) {
   thumbnailImage.src = data.response[0].img;
 }
 
-playBtn.addEventListener("click", togglePlay);
-
 function togglePlay() {
   if (audio.paused) {
     audio.play();
@@ -133,15 +131,6 @@ function handleCardClick(event) {
   playMusic(songID);
 }
 
-previousBtn.addEventListener("click", () => {
-  const prevId = --playingSongId;
-  if (prevId >= 0) playMusic(prevId);
-});
-nextBtn.addEventListener("click", () => {
-  const nextId = ++playingSongId;
-  if (nextId < songsList.length) playMusic(nextId);
-});
-
 function createLoader() {
   for (let i = 0; i < 12; i++) {
     let div = document.createElement("div");
@@ -149,14 +138,14 @@ function createLoader() {
     div.innerHTML = `<div class="card">
     <img src="images/gray.jpg" class="card-img-top" />
     <div class="card-body">
-      <h5 class="card-title placeholder-glow">
-        <span class="placeholder col-6"></span>
-      </h5>
-      <p class="card-text placeholder-glow">
-        <span class="placeholder col-7"></span>
-      </p>
+    <h5 class="card-title placeholder-glow">
+    <span class="placeholder col-6"></span>
+    </h5>
+    <p class="card-text placeholder-glow">
+    <span class="placeholder col-7"></span>
+    </p>
     </div>
-  </div>`;
+    </div>`;
     loaderContiner.appendChild(div);
   }
 }
@@ -171,4 +160,20 @@ function showLoader() {
     loaderContiner.classList.add("d-none");
   }
 }
-addSongCards();
+async function init() {
+  await addSongCards();
+  await playMusic(0);
+  audio.pause();
+  playBtn.innerHTML = `<i class="bi bi-play-fill"></i>`;
+}
+playBtn.addEventListener("click", togglePlay);
+previousBtn.addEventListener("click", () => {
+  const prevId = --playingSongId;
+  if (prevId >= 0) playMusic(prevId);
+});
+nextBtn.addEventListener("click", () => {
+  const nextId = ++playingSongId;
+  if (nextId < songsList.length) playMusic(nextId);
+});
+
+init();
