@@ -8,6 +8,8 @@ const range = document.getElementById("progress");
 const thumbnailImage = document.querySelector(".imgThumbnail");
 const previousBtn = document.getElementById("previous");
 const nextBtn = document.getElementById("next");
+const loaderContiner = document.querySelector(".loader");
+let loader = true;
 const songsList = [];
 async function getSongList() {
   const url = "https://youtube-music-api3.p.rapidapi.com/home?gl=IN";
@@ -67,6 +69,7 @@ function createSongCard(data, index) {
 }
 
 async function addSongCards() {
+  showLoader();
   await getSongList();
   for (let index = 0; index < songsList.length; index++) {
     const song = songsList[index];
@@ -75,6 +78,8 @@ async function addSongCards() {
     card.addEventListener("click", (event) => handleCardClick(event));
     songsContainer.appendChild(card);
   }
+  loader = false;
+  showLoader();
 }
 
 async function playMusic(songID) {
@@ -137,4 +142,33 @@ nextBtn.addEventListener("click", () => {
   if (nextId < songsList.length) playMusic(nextId);
 });
 
+function createLoader() {
+  for (let i = 0; i < 12; i++) {
+    let div = document.createElement("div");
+    div.classList.add("card");
+    div.innerHTML = `<div class="card">
+    <img src="images/gray.jpg" class="card-img-top" />
+    <div class="card-body">
+      <h5 class="card-title placeholder-glow">
+        <span class="placeholder col-6"></span>
+      </h5>
+      <p class="card-text placeholder-glow">
+        <span class="placeholder col-7"></span>
+      </p>
+    </div>
+  </div>`;
+    loaderContiner.appendChild(div);
+  }
+}
+
+function showLoader() {
+  if (loader) {
+    createLoader();
+    songsContainer.classList.add("d-none");
+    loaderContiner.classList.add("d-block");
+  } else {
+    songsContainer.classList.remove("d-none");
+    loaderContiner.classList.add("d-none");
+  }
+}
 addSongCards();

@@ -32,6 +32,8 @@
       <main class="flex-grow-1">
         <h1 class="p-3 display-1 fw-bold">New Releases</h1>
         <div
+          class="loader d-flex flex-wrap justify-content-evenly row-gap-3 column-gap-1"></div>
+        <div
           class="songsContainer d-flex flex-wrap justify-content-evenly align-items-lg-stretch row-gap-3 column-gap-1"></div>
       </main>
     </div>
@@ -56,9 +58,9 @@
             </button>
           </div>
           <div class="hstack">
-            <span class="currentTime text-white p-3">0:00</span>
+            <span class="currentTime text-white text-nowrap p-3">0:00</span>
             <input id="progress" class="flex-grow-1" type="range" value="0" />
-            <span class="endTime text-white p-3">----</span>
+            <span class="endTime text-white text-nowrap p-3">----</span>
           </div>
         </div>
       </div>
