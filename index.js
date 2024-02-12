@@ -112,7 +112,9 @@ function formatTime(seconds) {
 }
 
 function displayTime(audio) {
-  endTime.innerHTML = formatTime(audio.duration);
+  let audioDuration = audio.duration;
+  if (isNaN(audioDuration)) endTime.innerHTML = "N/A";
+  else endTime.innerHTML = formatTime(audioDuration);
   playingTime.innerHTML = formatTime(audio.currentTime);
 }
 
